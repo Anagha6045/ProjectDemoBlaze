@@ -1,0 +1,21 @@
+{
+
+    "loginTestData":{
+
+    "platformUrl": "https://www.demoblaze.com/",
+    "username" : "TestUser",
+    "password" : "Test@123",
+    "username01" : "Bini.jos@yopmail.com",
+    "invalidUserName" : "user.invalid@yopmail.com",
+    "invalidPassword" : "12345678"
+    },
+    "orderDetails": {
+    "name": "John Smith",
+    "country": "United States",
+    "city": "New York",
+    "card": "1234567890123456",
+    "month": "12",
+    "year": "2029"
+    }
+
+}
