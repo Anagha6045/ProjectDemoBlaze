@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
-import testData from '../utils/testData.json';
 
-export default class ProductListingPage{
+export default class AddToCartPage{
 
     constructor(page)
     {
@@ -13,20 +12,11 @@ export default class ProductListingPage{
         this.homePageBtn=page.locator('#nava')
         this.laptops = page.locator('//a[text()="Laptops"]')
         this.Sonyvaioi5 =page.locator('//a[text()="Sony vaio i5"]')
-        this.openCartItems =page.locator('//a[text()="Cart"]')
-        this.placeOrder  = page.locator('//button[text()="Place Order"]')
-        this.name = page.locator('#name')
-        this.country = page.locator('#country')
-        this.city =page.locator('#city')
-        this.card = page.locator('#card')
-        this.month = page.locator('#month')
-        this.year = page.locator('#year')
-        this.purchaseItem = page.locator('//button[text()="Purchase"]')
     }
 
     async userWelcome()
     {
-        await expect(this.welcomeUserName.toBeVisible());
+        await expect(this.welcomeUserName).toBeVisible();
     }
 
     async addPhonestoTheCart()
@@ -52,21 +42,6 @@ export default class ProductListingPage{
         await laptopDialog;
     }
 
-    async reviewCartItems()
-    {
-        await this.openCartItems.click();
-        await this.placeOrder.click();
-        await this.name.fill(testData.orderDetails.name);
-        await this.country.fill(testData.orderDetails.country);
-        await this.city.fill(testData.orderDetails.city);
-        await this.card.fill(testData.orderDetails.card);
-        await this.month.fill(testData.orderDetails.month);
-        await this.year.fill(testData.orderDetails.year);
-        await this.purchaseItem.scrollIntoViewIfNeeded();
-        await this.purchaseItem.click();
-
-    }
-
     async acceptProductAddPopUp()
     {
         const dialog = await this.page.waitForEvent('dialog');
@@ -74,4 +49,3 @@ export default class ProductListingPage{
         await dialog.accept();
     }
 }
-
