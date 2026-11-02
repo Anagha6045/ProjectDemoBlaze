@@ -5,3 +5,10 @@ test('Sign up to the application',async({page})=>{
     const signUp_Page = new SignUpPage(page);
     await signUp_Page.signUp();   
 })
+
+test('Close Sign up after enterin username and passsword',async({page})=>{
+    const signUp_Page = new SignUpPage(page);
+    await signUp_Page.signUpClose();   
+})
+
+

@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import testData from '../utils/testData.json';
 
 export default class SignUpPage {
@@ -7,6 +8,7 @@ export default class SignUpPage {
         this.username = page.locator('#sign-username');
         this.password = page.locator('#sign-password');
         this.signUpButton = page.getByRole('button', { name: 'Sign up', exact: true });
+        this.closeButton =  page.getByRole('button', { name: 'Close', exact: true });
     }
 
     async signUp() {
@@ -25,14 +27,21 @@ export default class SignUpPage {
             })
     }
 
-    generateUserName()
-    {
-        const now = new Date();
+    async signUpClose() {
+        await this.page.goto(testData.loginTestData.platformUrl);
+        const username = this.generateUserName();
+        const password = testData.password;
+        
 
-        const time = String(now.getHours()).padStart(2,'0')+ String(now.getMinutes()).padStart(2,'0')
-        const date = String(now.getDate()).padStart(2,'0') + String(now.getMonth()+1).padStart(2,'0') + String.apply(now.getFullYear()).slice(-2);
+        await this.signUpLink.click();
+        await this.username.fill(username);
+        await this.password.fill(password);
+        await this.closeButton.click();
+       
+    }
 
-        return `${testData.username}${time}_${date}`;
+    generateUserName() {
+        return faker.internet.username();
     }
 
 
