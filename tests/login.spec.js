@@ -1,49 +1,48 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import LoginPage from '../page/LoginPage';
-import AddToCartPage from '../page/AddToCartPage';
-import testData from '../utils/testData.json'
+import SignUpPage from '../page/SignUpPage';
+import testData from '../utils/testData.json';
 
-test('Login with Valid Credentials', async ({ page }) => {
+test('Login with valid credentials', async ({ page }) => {
+    const signUpPage = new SignUpPage(page);
     const loginPage = new LoginPage(page);
-    const addToCartPage = new AddToCartPage(page);
-    const username = testData.loginTestData.username01;
-    const password = testData.loginTestData.password;
+    const credentials = await signUpPage.registerAccount();
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterCredentials(username,password);
-    await addToCartPage.userWelcome();
-    
-    await expect(loginPage.logoutButton).toBeVisible();
-    await expect(loginPage.welcomeUserName).toContainText(username01);
-});
- 
-test('Login with Valid Username and Invalid password', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    await loginPage.enterValidCredentials(credentials.username, credentials.password);
 
-     const username = testData.loginTestData.username01
-    const password = testData.loginTestData.invalidPassword
-    await loginPage.loginIntoApplication();
-    await loginPage.enterCredentials(username,password);
-    loginPage.InValidPasswordmessage();
+    await expect(loginPage.welcomeUserName).toContainText(credentials.username);
 });
 
-test('Login with Invalid Username and Valid Password', async ({ page }) => {
+test('Login with valid username and invalid password', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    const username = testData.loginTestData.invalidUserName
-    const password = testData.loginTestData.password
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterCredentials(username,password);
-    loginPage.InvalidUserNameMessage();
-
-    
+    await loginPage.enterInvalidCredentials(
+        testData.loginTestData.username01,
+        testData.loginTestData.invalidPassword,
+        'Wrong password.'
+    );
 });
 
-test('Login with Invalid Username and Password', async ({ page }) => {
+test('Login with invalid username and valid password', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    const username = testData.loginTestData.invalidUserName
-    const password = testData.loginTestData.invalidPassword
-   await loginPage.loginIntoApplication();
-    await loginPage.enterCredentials(username,password);
-    await loginPage.InvalidUserNameMessage();
+
+    await loginPage.loginIntoApplication();
+    await loginPage.enterInvalidCredentials(
+        testData.loginTestData.invalidUserName,
+        testData.loginTestData.password,
+        'User does not exist.'
+    );
+});
+
+test('Login with invalid username and password', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.loginIntoApplication();
+    await loginPage.enterInvalidCredentials(
+        testData.loginTestData.invalidUserName,
+        testData.loginTestData.invalidPassword,
+        'User does not exist.'
+    );
 });

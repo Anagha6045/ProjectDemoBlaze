@@ -45,7 +45,7 @@ export default class AddToCartPage{
     async acceptProductAddPopUp()
     {
         const dialog = await this.page.waitForEvent('dialog');
-        expect(dialog.message()).toBe('Product added.');
+        expect(dialog.message()).toBe('Product added');
         await dialog.accept();
     }
 }

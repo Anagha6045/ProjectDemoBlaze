@@ -6,7 +6,6 @@ export default class PurchasePage {
         this.page = page;
         this.openCartItems = page.locator('//a[text()="Cart"]');
         this.cartItems = page.locator('#tbodyid tr');
-        this.cartContents = page.locator('#tbodyid');
         this.placeOrder = page.locator('//button[text()="Place Order"]');
         this.name = page.locator('#name');
         this.country = page.locator('#country');
@@ -22,9 +21,9 @@ export default class PurchasePage {
     async checkoutCart() {
         await this.openCartItems.click();
         await expect(this.cartItems.first()).toBeVisible();
-        await expect(this.cartContents).toContainText('Samsung galaxy s6');
-        await expect(this.cartContents).toContainText('Nokia lumia 1520');
-        await expect(this.cartContents).toContainText('Sony vaio i5');
+        await expect(this.cartItems.filter({ hasText: 'Samsung galaxy s6' }).first()).toBeVisible();
+        await expect(this.cartItems.filter({ hasText: 'Nokia lumia 1520' }).first()).toBeVisible();
+        await expect(this.cartItems.filter({ hasText: 'Sony vaio i5' }).first()).toBeVisible();
 
         await this.placeOrder.click();
         await this.name.fill(testData.orderDetails.name);
