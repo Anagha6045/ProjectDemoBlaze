@@ -9,8 +9,9 @@ test('Login with valid credentials', async ({ page }) => {
     const credentials = await signUpPage.registerAccount();
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterValidCredentials(credentials.username, credentials.password);
+    await loginPage.enterCredentials(credentials.username, credentials.password);
 
+    await expect(loginPage.logoutButton).toBeVisible();
     await expect(loginPage.welcomeUserName).toContainText(credentials.username);
 });
 
@@ -18,31 +19,43 @@ test('Login with valid username and invalid password', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterInvalidCredentials(
+    const dialogPromise = page.waitForEvent('dialog');
+    await loginPage.enterCredentials(
         testData.loginTestData.username01,
-        testData.loginTestData.invalidPassword,
-        'Wrong password.'
+        testData.loginTestData.invalidPassword
     );
+    const dialog = await dialogPromise;
+    expect(dialog.message()).toBe('Wrong password.');
+    await dialog.accept();
+    await expect(loginPage.logoutButton).not.toBeVisible();
 });
 
 test('Login with invalid username and valid password', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterInvalidCredentials(
+    const dialogPromise = page.waitForEvent('dialog');
+    await loginPage.enterCredentials(
         testData.loginTestData.invalidUserName,
-        testData.loginTestData.password,
-        'User does not exist.'
+        testData.loginTestData.password
     );
+    const dialog = await dialogPromise;
+    expect(dialog.message()).toBe('User does not exist.');
+    await dialog.accept();
+    await expect(loginPage.logoutButton).not.toBeVisible();
 });
 
 test('Login with invalid username and password', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterInvalidCredentials(
+    const dialogPromise = page.waitForEvent('dialog');
+    await loginPage.enterCredentials(
         testData.loginTestData.invalidUserName,
-        testData.loginTestData.invalidPassword,
-        'User does not exist.'
+        testData.loginTestData.invalidPassword
     );
+    const dialog = await dialogPromise;
+    expect(dialog.message()).toBe('User does not exist.');
+    await dialog.accept();
+    await expect(loginPage.logoutButton).not.toBeVisible();
 });

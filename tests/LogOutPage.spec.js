@@ -10,7 +10,7 @@ test('Log out after logging in', async ({ page }) => {
     const credentials = await signUpPage.registerAccount();
 
     await loginPage.loginIntoApplication();
-    await loginPage.enterValidCredentials(credentials.username, credentials.password);
+    await loginPage.enterCredentials(credentials.username, credentials.password);
     await expect(logOutPage.logoutButton).toBeVisible();
 
     await logOutPage.logoutFromApplication();

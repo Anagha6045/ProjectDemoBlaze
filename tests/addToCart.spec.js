@@ -7,6 +7,7 @@ test('Add phones to the cart', async ({ page }) => {
 
     await page.goto(testData.loginTestData.platformUrl);
     await addToCartPage.addPhonestoTheCart();
+    
 });
 
 test('Add a laptop to the cart', async ({ page }) => {

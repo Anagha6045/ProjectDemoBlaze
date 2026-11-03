@@ -47,5 +47,5 @@ export default class AddToCartPage{
         const dialog = await this.page.waitForEvent('dialog');
         expect(dialog.message()).toBe('Product added');
         await dialog.accept();
-    }
+    } 
 }

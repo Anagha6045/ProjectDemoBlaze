@@ -1,4 +1,3 @@
-import { expect } from '@playwright/test';
 import testData from '../utils/testData.json';
 
 export default class LoginPage {
@@ -17,27 +16,9 @@ export default class LoginPage {
         await this.loginOption.click();
     }
 
-    async enterValidCredentials(username, password) {
-        await this.enterCredentials(username, password);
-        await expect(this.logoutButton).toBeVisible();
-    }
-
     async enterCredentials(username, password) {
         await this.loginUserName.fill(username);
         await this.loginPassword.fill(password);
         await this.loginButton.click();
-    }
-
-    async enterInvalidCredentials(username, password, expectedMessage) {
-        await this.loginUserName.fill(username);
-        await this.loginPassword.fill(password);
-
-        const dialogPromise = this.page.waitForEvent('dialog');
-        await this.loginButton.click();
-        const dialog = await dialogPromise;
-
-        expect(dialog.message()).toBe(expectedMessage);
-        await dialog.accept();
-        await expect(this.logoutButton).not.toBeVisible();
     }
 }
